@@ -27,7 +27,9 @@
               <div v-for="(data,index) in pickerData" :key="index">
                 <!-- The class name of the ul and li need be configured to BetterScroll. -->
                 <ul class="cube-picker-wheel-scroll">
-                  <li v-for="(item,index) in data" class="cube-picker-wheel-item" :key="index" v-html="item[textKey]">
+                  <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
+                      :class="{'active': wheelSelectedItem[index] === idx}"
+                      :key="idx" v-html="item[textKey]">
                   </li>
                 </ul>
               </div>
@@ -68,7 +70,8 @@
     data() {
       return {
         pickerData: this.data.slice(),
-        pickerSelectedIndex: this.selectedIndex
+        pickerSelectedIndex: this.selectedIndex,
+        wheelSelectedItem: {}
       }
     },
     created() {
@@ -243,6 +246,7 @@
           })
           wheel.on('scrollEnd', () => {
             this.$emit(EVENT_CHANGE, i, wheel.getSelectedIndex())
+            this.wheelSelectedItem[i] = wheel.getSelectedIndex()
           })
         } else {
           this.wheels[i].refresh()
