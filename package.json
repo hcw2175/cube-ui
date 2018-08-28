@@ -21,12 +21,6 @@
     "test": "npm run unit && npm run codecov",
     "cm": "git-cz"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "commit-msg": "commitlint -e $GIT_PARAMS"
-    }
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -104,7 +98,6 @@
     "highlight.js": "^9.12.0",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.3",
-    "husky": "^1.0.0-rc.6",
     "inject-loader": "^3.0.0",
     "js-cookie": "^2.1.4",
     "karma": "^1.4.1",
