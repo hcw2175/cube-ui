@@ -19,3 +19,4 @@ package/
 *.ntvs*
 *.njsproj
 *.sln
+lib
