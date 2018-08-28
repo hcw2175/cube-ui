@@ -3,6 +3,8 @@
 scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${scriptPath}
 
+git remote add upstream git@github.com:didi/cube-ui.git
+
 # 拉取element源仓库的更新
 git fetch upstream
 
