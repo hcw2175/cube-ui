@@ -29,7 +29,10 @@
                 <ul class="cube-picker-wheel-scroll">
                   <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
                       :class="{'active': wheelSelectedItem[index] === idx}"
-                      :key="idx" v-html="item[textKey]">
+                      :key="idx">
+                    <div class="cube-picker-wheel-item__prepend" v-html="prepend"></div>
+                    <div class="cube-picker-wheel-item__val" v-html="item[textKey]"></div>
+                    <div class="cube-picker-wheel-item__append" v-html="append"></div>
                   </li>
                 </ul>
               </div>
@@ -65,13 +68,21 @@
       pending: {
         type: Boolean,
         default: false
+      },
+      prepend: {
+        type: String,
+        default: ''
+      },
+      append: {
+        type: String,
+        default: ''
       }
     },
     data() {
       return {
         pickerData: this.data.slice(),
         pickerSelectedIndex: this.selectedIndex,
-        wheelSelectedItem: {}
+        wheelSelectedItem: {0: 0}
       }
     },
     created() {
@@ -245,8 +256,8 @@
             observeDOM: false
           })
           wheel.on('scrollEnd', () => {
+            this.$set(this.wheelSelectedItem, i, wheel.getSelectedIndex())
             this.$emit(EVENT_CHANGE, i, wheel.getSelectedIndex())
-            this.wheelSelectedItem[i] = wheel.getSelectedIndex()
           })
         } else {
           this.wheels[i].refresh()
@@ -388,6 +399,17 @@
     overflow: hidden
     white-space: nowrap
     color: $picker-item-color
+    display: flex
+    display: -webkit-flex
+    flex-direction: row
+    align-items: center
+
+  .cube-picker-wheel-item .cube-picker-wheel-item__val
+    flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align center;
 
   .cube-picker-footer
     height: 20px
