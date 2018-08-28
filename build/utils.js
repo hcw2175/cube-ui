@@ -27,9 +27,18 @@ exports.cssLoaders = function (options) {
       plugins: () => postcssConfig.plugins
     }
   }
+// px转rem
+  const px2remLoader = {
+    loader: 'px2rem-loader',
+    options: {
+      // 设计稿大小为 750px / 10
+      remUnit: 75
+    }
+  };
 
   // generate loader string to be used with extract text plugin
   function generateLoaders(loader, loaderOptions) {
+    //var loaders = [cssLoader, postcssLoader, px2remLoader]
     var loaders = [cssLoader, postcssLoader]
     if (loader) {
       loaders.push({

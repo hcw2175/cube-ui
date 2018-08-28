@@ -107,6 +107,10 @@
             ...defCancelBtn
           }
         }
+      },
+      msgType: {
+        type: String,
+        default: 'alert'
       }
     },
     data() {
@@ -125,7 +129,7 @@
         return this.type === 'confirm'
       },
       containerClass() {
-        return `cube-dialog-${this.type}`
+        return `cube-dialog-${this.type} cube-dialog-${this.type}__${this.msgType}`
       }
     },
     methods: {

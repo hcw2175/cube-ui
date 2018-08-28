@@ -6,7 +6,8 @@
       :mask="mask"
       v-show="isVisible"
       @mask-click="maskClick"
-      >
+      :class="'cube-toast__' + type"
+    >
       <i v-show="!isLoading" class="cube-toast-icon" :class="iconClass"></i>
       <cube-loading v-show="isLoading"></cube-loading>
       <div v-show="txt" class="cube-toast-tip" v-html="txt"></div>
@@ -117,10 +118,12 @@
       color: $toast-color
       background-color: $toast-bgc
       border-radius: 2px
+
   .cube-toast-icon
     width: 24px
     height: 24px
     font-size: $fontsize-large-xxx
+
   .cube-toast-tip
     line-height: 20px
     font-size: $fontsize-medium
@@ -131,6 +134,7 @@
 
   .cube-toast-fade-enter-active
     animation: toast-in .2s
+
   .cube-toast-fade-leave-active
     animation: toast-out .2s
 
