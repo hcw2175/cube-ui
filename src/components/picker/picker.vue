@@ -23,16 +23,16 @@
           <div class="cube-picker-content">
             <i class="border-bottom-1px"></i>
             <i class="border-top-1px"></i>
+            <div class="cube-picker-wheel-bg">
+              <slot name="append"></slot>
+            </div>
             <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
               <div v-for="(data,index) in pickerData" :key="index">
                 <!-- The class name of the ul and li need be configured to BetterScroll. -->
                 <ul class="cube-picker-wheel-scroll">
                   <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
                       :class="{'active': wheelSelectedItem[index] === idx}"
-                      :key="idx">
-                    <div class="cube-picker-wheel-item__prepend" v-html="prepend"></div>
-                    <div class="cube-picker-wheel-item__val" v-html="item[textKey]"></div>
-                    <div class="cube-picker-wheel-item__append" v-html="append"></div>
+                      :key="idx" v-html="item[textKey]">
                   </li>
                 </ul>
               </div>
@@ -68,14 +68,6 @@
       pending: {
         type: Boolean,
         default: false
-      },
-      prepend: {
-        type: String,
-        default: ''
-      },
-      append: {
-        type: String,
-        default: ''
       }
     },
     data() {
@@ -363,9 +355,10 @@
   .cube-picker-content
     position: relative
     top: 20px
+    height 173px;
     > i
       position: absolute
-      z-index: 10
+      z-index: 12
       left: 0
       width: 100%
       height: 68px
@@ -373,17 +366,30 @@
       transform: translateZ(0)
     > .border-bottom-1px
       top: 0
-      background: linear-gradient(to top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8));
     > .border-top-1px
       bottom: 0
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8));
+    > .cube-picker-wheel-bg
+      position: absolute;
+      z-index: 10;
+      left: 0;
+      top: 68px;
+      width: 100%;
+      height: 36px;
+      background deepskyblue;
 
   .cube-picker-wheel-wrapper
     display: flex
     padding: 0 $picker-lr-padding
+    position absolute;
+    width : 100%;
+    top: 0;
+    bottom: 0;
+    z-index: 11;
     > div
       flex-fix()
-      height: 173px
+      height: 100%;
       overflow: hidden
       font-size: $fontsize-large-xx
 
