@@ -20,11 +20,19 @@
 
   export default {
     mounted() {
+      let flows = []
+      for (let i = 0; i <= 400; i++) {
+        flows.push({
+          text: i,
+          value: i
+        })
+      }
       this.picker = this.$createPicker({
         title: 'Picker',
-        data: [data1],
+        data: [flows],
         onSelect: this.selectHandle,
-        onCancel: this.cancelHandle
+        onCancel: this.cancelHandle,
+        probeType: 0
       })
 
       this.mutiPicker = this.$createPicker({
@@ -66,6 +74,8 @@
         onSelect: this.selectHandle,
         onCancel: this.cancelHandle
       })
+
+      this.showPicker()
     },
     methods: {
       showPicker() {

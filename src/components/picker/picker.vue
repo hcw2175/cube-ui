@@ -10,36 +10,45 @@
       @touchmove.prevent
       @mask-click="maskClick">
       <transition name="cube-picker-move">
-        <div class="cube-picker-panel cube-safe-area-pb" v-show="isVisible" @click.stop>
-          <div class="cube-picker-choose border-bottom-1px">
-            <span class="cube-picker-cancel" @click="cancel">{{cancelTxt}}</span>
-            <span class="cube-picker-confirm" @click="confirm">{{confirmTxt}}</span>
-            <div class="cube-picker-title-group">
-              <h1 class="cube-picker-title" v-html="title"></h1>
-              <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
-            </div>
-          </div>
+        <div>
+          <slot name="header"></slot>
 
-          <div class="cube-picker-content">
-            <i class="border-bottom-1px"></i>
-            <i class="border-top-1px"></i>
-            <div class="cube-picker-wheel-bg">
-              <slot name="append"></slot>
+          <div class="cube-picker-panel cube-safe-area-pb" v-show="isVisible" @click.stop>
+            <div class="cube-picker-choose border-bottom-1px">
+              <slot name="picker-header">
+                <span class="cube-picker-cancel" @click="cancel">{{cancelTxt}}</span>
+                <span class="cube-picker-confirm" @click="confirm">{{confirmTxt}}</span>
+                <div class="cube-picker-title-group">
+                  <h1 class="cube-picker-title" v-html="title"></h1>
+                  <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
+                </div>
+              </slot>
             </div>
-            <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
-              <div v-for="(data,index) in pickerData" :key="index">
-                <!-- The class name of the ul and li need be configured to BetterScroll. -->
-                <ul class="cube-picker-wheel-scroll">
-                  <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
-                      :class="{'active': wheelSelectedItem[index] === idx}"
-                      :key="idx" v-html="item[textKey]">
-                  </li>
-                </ul>
+
+            <div class="cube-picker-content">
+              <i class="border-bottom-1px"></i>
+              <i class="border-top-1px"></i>
+              <div class="cube-picker-wheel-bg">
+                <slot name="append"></slot>
+              </div>
+              <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
+                <div v-for="(data,index) in pickerData" :key="index">
+                  <!-- The class name of the ul and li need be configured to BetterScroll. -->
+                  <ul class="cube-picker-wheel-scroll">
+                    <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
+                        :class="{'active': wheelSelectedItem[index] === idx}"
+                        :key="idx">
+                      <div class="cube-picker-wheel-item__val" v-html="item[textKey]"></div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
+
+            <div class="cube-picker-footer"></div>
           </div>
 
-          <div class="cube-picker-footer"></div>
+          <slot name="footer"></slot>
         </div>
       </transition>
     </cube-popup>
@@ -60,6 +69,7 @@
   const EVENT_VALUE_CHANGE = 'value-change'
   const EVENT_CANCEL = 'cancel'
   const EVENT_CHANGE = 'change'
+  const EVENT_SCROLL = 'scroll'
 
   export default {
     name: COMPONENT_NAME,
@@ -88,6 +98,8 @@
     },
     methods: {
       confirm() {
+        this.stop()
+
         if (!this._canConfirm()) {
           return
         }
@@ -228,12 +240,18 @@
         const wheel = this.wheels[index]
         this.pickerSelectedIndex[index] = dist
         wheel.wheelTo(dist)
+        this.$set(this.wheelSelectedItem, index, dist)
       },
       refresh() {
         this.$nextTick(() => {
           this.wheels.forEach((wheel) => {
             wheel.refresh()
           })
+        })
+      },
+      stop() {
+        this.wheels.every((wheel) => {
+          wheel.stop()
         })
       },
       _createWheel(wheelWrapper, i) {
@@ -245,11 +263,19 @@
               wheelItemClass: 'cube-picker-wheel-item'
             },
             swipeTime: this.swipeTime,
-            observeDOM: false
+            observeDOM: false,
+            probeType: this.probeType
           })
+          this.$set(this.wheelSelectedItem, i, wheel.getSelectedIndex())
           wheel.on('scrollEnd', () => {
             this.$set(this.wheelSelectedItem, i, wheel.getSelectedIndex())
             this.$emit(EVENT_CHANGE, i, wheel.getSelectedIndex())
+          })
+          // 滚动过程实时计算当前位置
+          wheel.on('scroll', (position) => {
+            this.$set(this.wheelSelectedItem, i, -(Math.round(position.y / wheel.itemHeight)))
+            this.$emit(EVENT_SCROLL, this.wheelSelectedItem, i)
+            // console.log('x: ' + position.x + ', y: ' + position.y + ', idx: ' + Math.round(position.y / wheel.itemHeight))
           })
         } else {
           this.wheels[i].refresh()
@@ -309,7 +335,7 @@
 
   .cube-picker-choose
     position: relative
-    height: 60px
+    height: 60px;
 
   .cube-picker-confirm, .cube-picker-cancel
     font-size: $fontsize-medium
@@ -377,11 +403,10 @@
       top: 68px;
       width: 100%;
       height: 36px;
-      background deepskyblue;
 
   .cube-picker-wheel-wrapper
     display: flex
-    padding: 0 $picker-lr-padding
+    //padding: 0 $picker-lr-padding
     position absolute;
     width : 100%;
     top: 0;
@@ -409,13 +434,10 @@
     display: -webkit-flex
     flex-direction: row
     align-items: center
-
-  .cube-picker-wheel-item .cube-picker-wheel-item__val
-    flex: 1;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
     text-align center;
+    > .cube-picker-wheel-item__val
+      width: 100%
+      text-align: center;
 
   .cube-picker-footer
     height: 20px

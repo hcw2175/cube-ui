@@ -22,6 +22,10 @@ export default {
       default() {
         return {}
       }
+    },
+    probeType: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
