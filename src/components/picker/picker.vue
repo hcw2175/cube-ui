@@ -10,7 +10,6 @@
       @touchmove.prevent
       @mask-click="maskClick">
       <transition name="cube-picker-move">
-<<<<<<< HEAD
         <div>
           <slot name="header"></slot>
 
@@ -24,18 +23,8 @@
                   <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
                 </div>
               </slot>
-=======
-        <div class="cube-picker-panel cube-safe-area-pb" v-show="isVisible" @click.stop>
-          <div class="cube-picker-choose border-bottom-1px">
-            <span class="cube-picker-cancel" @click="cancel">{{_cancelTxt}}</span>
-            <span class="cube-picker-confirm" @click="confirm">{{_confirmTxt}}</span>
-            <div class="cube-picker-title-group">
-              <h1 class="cube-picker-title" v-html="title"></h1>
-              <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
->>>>>>> upstream/master
             </div>
 
-<<<<<<< HEAD
             <div class="cube-picker-content">
               <i class="border-bottom-1px"></i>
               <i class="border-top-1px"></i>
@@ -53,18 +42,6 @@
                     </li>
                   </ul>
                 </div>
-=======
-          <div class="cube-picker-content">
-            <i class="border-bottom-1px"></i>
-            <i class="border-top-1px"></i>
-            <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
-              <div v-for="(data,index) in finalData" :key="index">
-                <!-- The class name of the ul and li need be configured to BetterScroll. -->
-                <ul class="cube-picker-wheel-scroll">
-                  <li v-for="(item,index) in data" class="cube-picker-wheel-item" :key="index" v-html="item[textKey]">
-                  </li>
-                </ul>
->>>>>>> upstream/master
               </div>
             </div>
 
@@ -106,13 +83,10 @@
     },
     data() {
       return {
-<<<<<<< HEAD
         pickerData: this.data.slice(),
         pickerSelectedIndex: this.selectedIndex,
-        wheelSelectedItem: {0: 0}
-=======
+        wheelSelectedItem: {0: 0},
         finalData: this.data.slice()
->>>>>>> upstream/master
       }
     },
     created() {
