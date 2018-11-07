@@ -122,7 +122,7 @@ cube-ui 搭配 webpack 2+ 支持[后编译](#/zh-CN/docs/post-compile)和普通�
           "transform": "cube-ui/lib/${member}",
           "kebabCase": true,
           "style": {
-            "ignore": ["create-api", "better-scroll"]
+            "ignore": ["create-api", "better-scroll", "locale"]
           }
         }
       },
@@ -212,6 +212,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Radio,
+  Checker,
   Input,
   Textarea,
   Select,
@@ -242,7 +243,7 @@ import {
 也可以引入[create-api](#/zh-CN/docs/create-api)和[better-scroll](#/zh-CN/docs/better-scroll)模块：
 
 ```js
-import { createAPI, BetterScroll } from 'cube-ui'
+import { createAPI, BetterScroll, Locale } from 'cube-ui'
 ```
 
 #### 示例

@@ -10,6 +10,7 @@
       @touchmove.prevent
       @mask-click="maskClick">
       <transition name="cube-picker-move">
+<<<<<<< HEAD
         <div>
           <slot name="header"></slot>
 
@@ -23,8 +24,18 @@
                   <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
                 </div>
               </slot>
+=======
+        <div class="cube-picker-panel cube-safe-area-pb" v-show="isVisible" @click.stop>
+          <div class="cube-picker-choose border-bottom-1px">
+            <span class="cube-picker-cancel" @click="cancel">{{_cancelTxt}}</span>
+            <span class="cube-picker-confirm" @click="confirm">{{_confirmTxt}}</span>
+            <div class="cube-picker-title-group">
+              <h1 class="cube-picker-title" v-html="title"></h1>
+              <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
+>>>>>>> upstream/master
             </div>
 
+<<<<<<< HEAD
             <div class="cube-picker-content">
               <i class="border-bottom-1px"></i>
               <i class="border-top-1px"></i>
@@ -42,6 +53,18 @@
                     </li>
                   </ul>
                 </div>
+=======
+          <div class="cube-picker-content">
+            <i class="border-bottom-1px"></i>
+            <i class="border-top-1px"></i>
+            <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
+              <div v-for="(data,index) in finalData" :key="index">
+                <!-- The class name of the ul and li need be configured to BetterScroll. -->
+                <ul class="cube-picker-wheel-scroll">
+                  <li v-for="(item,index) in data" class="cube-picker-wheel-item" :key="index" v-html="item[textKey]">
+                  </li>
+                </ul>
+>>>>>>> upstream/master
               </div>
             </div>
 
@@ -62,6 +85,7 @@
   import popupMixin from '../../common/mixins/popup'
   import basicPickerMixin from '../../common/mixins/basic-picker'
   import pickerMixin from '../../common/mixins/picker'
+  import localeMixin from '../../common/mixins/locale'
 
   const COMPONENT_NAME = 'cube-picker'
 
@@ -73,7 +97,7 @@
 
   export default {
     name: COMPONENT_NAME,
-    mixins: [visibilityMixin, popupMixin, basicPickerMixin, pickerMixin],
+    mixins: [visibilityMixin, popupMixin, basicPickerMixin, pickerMixin, localeMixin],
     props: {
       pending: {
         type: Boolean,
@@ -82,19 +106,18 @@
     },
     data() {
       return {
+<<<<<<< HEAD
         pickerData: this.data.slice(),
         pickerSelectedIndex: this.selectedIndex,
         wheelSelectedItem: {0: 0}
+=======
+        finalData: this.data.slice()
+>>>>>>> upstream/master
       }
     },
     created() {
-      this.pickerSelectedVal = []
-      if (!this.pickerSelectedIndex.length) {
-        this.pickerSelectedIndex = []
-        for (let i = 0; i < this.pickerData.length; i++) {
-          this.pickerSelectedIndex[i] = 0
-        }
-      }
+      this._values = []
+      this._indexes = this.selectedIndex
     },
     methods: {
       confirm() {
@@ -108,38 +131,36 @@
         let changed = false
         let pickerSelectedText = []
 
-        const dataLength = this.pickerData.length
-        const selectedValLength = this.pickerSelectedVal.length
+        const length = this.finalData.length
+        const oldLength = this._values.length
 
-        if (selectedValLength !== dataLength) {
-          if (selectedValLength > dataLength) {
-            this.pickerSelectedVal.splice(dataLength)
-            this.pickerSelectedIndex.splice(dataLength)
-          }
+        // when column count has changed.
+        if (oldLength !== length) {
           changed = true
+          oldLength > length && (this._values.length = this._indexes.length = length)
         }
 
-        for (let i = 0; i < dataLength; i++) {
+        for (let i = 0; i < length; i++) {
           let index = this.wheels[i].getSelectedIndex()
-          this.pickerSelectedIndex[i] = index
+          this._indexes[i] = index
 
           let value = null
           let text = ''
-          if (this.pickerData[i].length) {
-            value = this.pickerData[i][index][this.valueKey]
-            text = this.pickerData[i][index][this.textKey]
+          if (this.finalData[i].length) {
+            value = this.finalData[i][index][this.valueKey]
+            text = this.finalData[i][index][this.textKey]
           }
-          if (this.pickerSelectedVal[i] !== value) {
+          if (this._values[i] !== value) {
             changed = true
           }
-          this.pickerSelectedVal[i] = value
+          this._values[i] = value
           pickerSelectedText[i] = text
         }
 
-        this.$emit(EVENT_SELECT, this.pickerSelectedVal, this.pickerSelectedIndex, pickerSelectedText)
+        this.$emit(EVENT_SELECT, this._values, this._indexes, pickerSelectedText)
 
         if (changed) {
-          this.$emit(EVENT_VALUE_CHANGE, this.pickerSelectedVal, this.pickerSelectedIndex, pickerSelectedText)
+          this.$emit(EVENT_VALUE_CHANGE, this._values, this._indexes, pickerSelectedText)
         }
       },
       maskClick() {
@@ -159,17 +180,17 @@
           this.$nextTick(() => {
             this.wheels = this.wheels || []
             let wheelWrapper = this.$refs.wheelWrapper
-            for (let i = 0; i < this.pickerData.length; i++) {
+            for (let i = 0; i < this.finalData.length; i++) {
               this._createWheel(wheelWrapper, i).enable()
-              this.wheels[i].wheelTo(this.pickerSelectedIndex[i])
+              this.wheels[i].wheelTo(this._indexes[i])
             }
             this.dirty && this._destroyExtraWheels()
             this.dirty = false
           })
         } else {
-          for (let i = 0; i < this.pickerData.length; i++) {
+          for (let i = 0; i < this.finalData.length; i++) {
             this.wheels[i].enable()
-            this.wheels[i].wheelTo(this.pickerSelectedIndex[i])
+            this.wheels[i].wheelTo(this._indexes[i])
           }
         }
       },
@@ -179,19 +200,19 @@
         }
         this.isVisible = false
 
-        for (let i = 0; i < this.pickerData.length; i++) {
+        for (let i = 0; i < this.finalData.length; i++) {
           this.wheels[i].disable()
         }
       },
       setData(data, selectedIndex) {
-        this.pickerSelectedIndex = selectedIndex ? [...selectedIndex] : []
-        this.pickerData = data.slice()
+        this._indexes = selectedIndex ? [...selectedIndex] : []
+        this.finalData = data.slice()
         if (this.isVisible) {
           this.$nextTick(() => {
             const wheelWrapper = this.$refs.wheelWrapper
-            this.pickerData.forEach((item, i) => {
+            this.finalData.forEach((item, i) => {
               this._createWheel(wheelWrapper, i)
-              this.wheels[i].wheelTo(this.pickerSelectedIndex[i])
+              this.wheels[i].wheelTo(this._indexes[i])
             })
             this._destroyExtraWheels()
           })
@@ -215,8 +236,8 @@
         let wheel = this.wheels ? this.wheels[index] : false
         let dist = 0
         if (scroll && wheel) {
-          let oldData = this.pickerData[index]
-          this.$set(this.pickerData, index, data)
+          let oldData = this.finalData[index]
+          this.$set(this.finalData, index, data)
           let selectedIndex = wheel.getSelectedIndex()
           if (oldData.length) {
             let oldValue = oldData[selectedIndex][this.valueKey]
@@ -227,7 +248,7 @@
               }
             }
           }
-          this.pickerSelectedIndex[index] = dist
+          this._indexes[index] = dist
           this.$nextTick(() => {
             // recreate wheel so that the wrapperHeight will be correct.
             wheel = this._createWheel(wheelWrapper, index)
@@ -238,7 +259,7 @@
       },
       scrollTo(index, dist) {
         const wheel = this.wheels[index]
-        this.pickerSelectedIndex[index] = dist
+        this._indexes[index] = dist
         wheel.wheelTo(dist)
         this.$set(this.wheelSelectedItem, index, dist)
       },
@@ -259,7 +280,7 @@
         if (!this.wheels[i]) {
           const wheel = this.wheels[i] = new BScroll(wheelWrapper.children[i], {
             wheel: {
-              selectedIndex: this.pickerSelectedIndex[i] || 0,
+              selectedIndex: this._indexes[i] || 0,
               wheelWrapperClass: 'cube-picker-wheel-scroll',
               wheelItemClass: 'cube-picker-wheel-item'
             },
@@ -284,7 +305,7 @@
         return this.wheels[i]
       },
       _destroyExtraWheels() {
-        const dataLength = this.pickerData.length
+        const dataLength = this.finalData.length
         if (this.wheels.length > dataLength) {
           const extraWheels = this.wheels.splice(dataLength)
           extraWheels.forEach((wheel) => {

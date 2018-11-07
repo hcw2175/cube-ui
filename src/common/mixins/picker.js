@@ -8,11 +8,11 @@ export default {
     },
     cancelTxt: {
       type: String,
-      default: '取消'
+      default: ''
     },
     confirmTxt: {
       type: String,
-      default: '确定'
+      default: ''
     },
     swipeTime: {
       type: Number,
@@ -25,6 +25,14 @@ export default {
     scrollDelay: {
       type: Number,
       default: 300
+    }
+  },
+  computed: {
+    _cancelTxt () {
+      return this.cancelTxt || this.$t('cancel')
+    },
+    _confirmTxt () {
+      return this.confirmTxt || this.$t('ok')
     }
   }
 }

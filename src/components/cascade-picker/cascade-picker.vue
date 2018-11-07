@@ -8,8 +8,8 @@
     :title="title"
     :subtitle="subtitle"
     :z-index="zIndex"
-    :cancel-txt="cancelTxt"
-    :confirm-txt="confirmTxt"
+    :cancel-txt="_cancelTxt"
+    :confirm-txt="_confirmTxt"
     :swipe-time="swipeTime"
     :mask-closable="maskClosable"
     :probeType="probeType"
@@ -27,6 +27,7 @@
   import popupMixin from '../../common/mixins/popup'
   import basicPickerMixin from '../../common/mixins/basic-picker'
   import pickerMixin from '../../common/mixins/picker'
+  import localeMixin from '../../common/mixins/locale'
 
   const COMPONENT_NAME = 'cube-cascade-picker'
   const EVENT_SELECT = 'select'
@@ -35,7 +36,7 @@
 
   export default {
     name: COMPONENT_NAME,
-    mixins: [visibilityMixin, popupMixin, basicPickerMixin, pickerMixin],
+    mixins: [visibilityMixin, popupMixin, basicPickerMixin, pickerMixin, localeMixin],
     props: {
       async: {
         type: Boolean,
