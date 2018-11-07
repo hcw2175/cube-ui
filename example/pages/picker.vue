@@ -18,7 +18,6 @@
   import { column1, column2, column3 } from 'example/data/picker'
 
   export default {
-<<<<<<< HEAD
     mounted() {
       let flows = []
       for (let i = 0; i <= 400; i++) {
@@ -37,7 +36,7 @@
 
       this.mutiPicker = this.$createPicker({
         title: 'Multi-column Picker',
-        data: [data1, data2, data3],
+        data: [column1, column2, column3],
         onSelect: this.selectHandle,
         onCancel: this.cancelHandle
       })
@@ -61,7 +60,7 @@
 
       this.updatePropsPicker = this.$createPicker({
         title: 'Use $updateProps',
-        data: [data1],
+        data: [column1],
         selectedIndex: [0],
         onSelect: this.selectHandle,
         onCancel: this.cancelHandle
@@ -70,15 +69,13 @@
       this.subtitlePicker = this.$createPicker({
         title: 'Picker',
         subtitle: 'subtitle',
-        data: [data1],
+        data: [column1],
         onSelect: this.selectHandle,
         onCancel: this.cancelHandle
       })
 
       this.showPicker()
     },
-=======
->>>>>>> upstream/master
     methods: {
       showPicker() {
         if (!this.picker) {

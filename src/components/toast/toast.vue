@@ -6,16 +6,11 @@
       :mask="mask"
       v-show="isVisible"
       @mask-click="maskClick"
-<<<<<<< HEAD
       :class="'cube-toast__' + type"
     >
-      <i v-show="!isLoading" class="cube-toast-icon" :class="iconClass"></i>
-      <cube-loading v-show="isLoading"></cube-loading>
-=======
-      >
-      <i v-if="!isLoading && iconClass.length" class="cube-toast-icon" :class="iconClass"></i>
+      <i v-show="!isLoading && iconClass.length" class="cube-toast-icon" :class="iconClass"></i>
       <cube-loading v-if="isLoading"></cube-loading>
->>>>>>> upstream/master
+
       <div v-show="txt" class="cube-toast-tip" v-html="txt"></div>
     </cube-popup>
   </transition>
