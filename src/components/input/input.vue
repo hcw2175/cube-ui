@@ -13,7 +13,7 @@
       :readonly="readonly"
       :autocomplete="autocomplete"
       :autofocus="autofocus"
-      @focus="handleFocus"
+      @focus="readonly ? handleFocus : this.blur()"
       @blur="handleBlur"
       @change="changeHander"
     >

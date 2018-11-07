@@ -12,9 +12,12 @@
     :confirm-txt="confirmTxt"
     :swipe-time="swipeTime"
     :mask-closable="maskClosable"
+    :probeType="probeType"
+    :scrollDelay="scrollDelay"
     @select="_pickerSelect"
     @cancel="_pickerCancel"
-    @change="_pickerChange">
+    @change="_pickerChange"
+    @scroll="_pickerScroll">
   </cube-picker>
 </template>
 
@@ -71,6 +74,9 @@
             : this._updatePickerData(i + 1)
         }
         this.$emit(EVENT_CHANGE, i, newIndex)
+      },
+      _pickerScroll(selectItem, i) {
+        this._pickerChange(i, selectItem[i])
       },
       _updatePickerData(fromColumn = 0) {
         let data = this.cascadeData

@@ -255,6 +255,7 @@
         })
       },
       _createWheel(wheelWrapper, i) {
+        const that = this
         if (!this.wheels[i]) {
           const wheel = this.wheels[i] = new BScroll(wheelWrapper.children[i], {
             wheel: {
@@ -273,8 +274,8 @@
           })
           // 滚动过程实时计算当前位置
           wheel.on('scroll', (position) => {
-            this.$set(this.wheelSelectedItem, i, -(Math.round(position.y / wheel.itemHeight)))
-            this.$emit(EVENT_SCROLL, this.wheelSelectedItem, i)
+            that.$set(that.wheelSelectedItem, i, -(Math.round(position.y / wheel.itemHeight)))
+            that.$emit(EVENT_SCROLL, that.wheelSelectedItem, i)
             // console.log('x: ' + position.x + ', y: ' + position.y + ', idx: ' + Math.round(position.y / wheel.itemHeight))
           })
         } else {

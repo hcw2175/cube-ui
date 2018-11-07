@@ -21,6 +21,10 @@ export default {
     maskClosable: {
       type: Boolean,
       default: true
+    },
+    scrollDelay: {
+      type: Number,
+      default: 300
     }
   }
 }
