@@ -13,7 +13,6 @@
     :swipe-time="swipeTime"
     :mask-closable="maskClosable"
     :probeType="probeType"
-    :scrollDelay="scrollDelay"
     @select="_pickerSelect"
     @cancel="_pickerCancel"
     @change="_pickerChange"
@@ -76,8 +75,8 @@
         }
         this.$emit(EVENT_CHANGE, i, newIndex)
       },
-      _pickerScroll(selectItem, i) {
-        this._pickerChange(i, selectItem[i])
+      _pickerScroll(wheelSelectedItem, wheelIdx) {
+        this._pickerChange(wheelIdx, wheelSelectedItem[wheelIdx])
       },
       _updatePickerData(fromColumn = 0) {
         let data = this.cascadeData
@@ -97,7 +96,11 @@
               ? (this.pickerSelectedIndex[i] < data.length ? this.pickerSelectedIndex[i] || 0 : 0)
               : this.$refs.picker.refillColumn(i, columnData)
           }
-          data = data.length ? data[this.pickerSelectedIndex[i]].children : null
+          if (data.length && data[this.pickerSelectedIndex[i]]) {
+            data = data[this.pickerSelectedIndex[i]].children
+          } else {
+            data = null
+          }
 
           i++
         }
