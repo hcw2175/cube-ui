@@ -18,7 +18,7 @@
       @change="changeHander"
     >
     <div class="cube-input-append" v-if="$slots.append || _showClear || _showPwdEye">
-      <div class="cube-input-clear" v-if="_showClear" @click="handleClear">
+      <div class="cube-input-clear" v-if="_showClear" @touchend="handleClear">
         <i class="cubeic-wrong"></i>
       </div>
       <div class="cube-input-eye" v-if="_showPwdEye" @click="handlePwdEye">
@@ -30,6 +30,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import inputMixin from '../../common/mixins/input'
   const COMPONENT_NAME = 'cube-input'
   const EVENT_INPUT = 'input'
   const EVENT_CHANGE = 'change'
@@ -38,6 +39,7 @@
 
   export default {
     name: COMPONENT_NAME,
+    mixins: [inputMixin],
     props: {
       value: [String, Number],
       type: {

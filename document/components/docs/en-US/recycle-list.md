@@ -78,7 +78,7 @@ A recyclable scrolling list that always keeps the number of DOMs at a very low r
 
     The vast majority of list interactions are when the user scrolls to the bottom and requests the next page of data. The default implementation of the component is based on this interaction.
 
-    The component accepts `size` as props and controls how many counts of data are rendered at a time. `offset` is the distance to configure the bottom pull data, `onFetch` is a function, which is mandatory, and the return value of the function must be a Promise, and the `items` ( **Array** ) must be the first parameter when calling `resolve` function, so the component can get `items`. Of course, if you want to stop scrolling, pass `false`.
+    The component accepts `size` as props and controls how many counts of data are rendered at a time. `offset` is the distance to configure the bottom pull data, `onFetch` is a function, which is mandatory, and the return value of the function must be a Promise, and the `items` ( **Array** ) must be the first parameter when calling `resolve` function, so the component can get `items`. Of course, if you want to stop scrolling, pass `false` or an array whose length is smaller than `size` props.
 
     The component supports the scope slot. You can use the destructuring assignment of the above example to get the `data` (each data item of item) that the component passes to the caller.
 
@@ -144,3 +144,9 @@ The `onFetch` function must return a Promise, and the first argument to Promise'
 | item | Scope slot for each data item | data: An item in items |
 | spinner | Named slot for loading more | - |
 | noMore | Named slot for no more data | - |
+
+### Instance methods
+
+| Method name | Description |
+| - | - |
+| reset | To clean up all the contents |

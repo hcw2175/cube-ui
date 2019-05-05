@@ -32,7 +32,7 @@
                 <slot name="append"></slot>
               </div>
               <div class="cube-picker-wheel-wrapper" ref="wheelWrapper">
-                <div v-for="(data,index) in finalData" :key="index">
+                <div v-for="(data,index) in finalData" :key="index" :style="{ order: _getFlexOrder(data)}">
                   <!-- The class name of the ul and li need be configured to BetterScroll. -->
                   <!-- edit by hucw -->
                   <ul class="cube-picker-wheel-scroll">
@@ -296,6 +296,12 @@
         return !this.pending && this.wheels.every((wheel) => {
           return !wheel.isInTransition
         })
+      },
+      _getFlexOrder(data) {
+        if (data[0]) {
+          return data[0][this.orderKey]
+        }
+        return 0
       }
     },
     beforeDestroy() {
