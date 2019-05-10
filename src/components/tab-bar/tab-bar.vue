@@ -131,7 +131,11 @@
         }
       },
       _getOffsetLeft (index) {
-        return this.tabs[index].$el.offsetLeft || 0
+        try {
+          return this.tabs[index].$el.offsetLeft || 0
+        } catch (e) {
+          return 0
+        }
       },
       _resizeHandler () {
         clearTimeout(this._resizeTimer)
