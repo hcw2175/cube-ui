@@ -36,6 +36,15 @@ export class BScroll {}
  */
 export function createAPI (vue: typeof Vue, Component: CubeUIComponent, events?: string[], single?: boolean) : object
 
+/** Local Module */
+export class Locale {
+  install (vue: typeof Vue): void
+  use (lang: string, messages: object): void
+}
+
+/** Style Module */
+export class Style {}
+
 // basic
 /** Button Component */
 export class Button extends CubeUIComponent {}
