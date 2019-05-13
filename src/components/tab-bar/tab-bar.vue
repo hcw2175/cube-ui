@@ -123,7 +123,11 @@
         let index = 0
         if (this.tabs.length > 0) {
           index = findIndex(this.tabs, (tab) => tab.value === this.value)
-          width = this.tabs[index].$el.clientWidth
+          try {
+            width = this.tabs[index].$el.clientWidth
+          } catch (e) {
+            //
+          }
         }
         return {
           width,
