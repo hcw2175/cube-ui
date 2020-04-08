@@ -179,7 +179,7 @@
 
   - 下拉刷新
 
-  可以通过 `pullDownRefresh` 属性开启下拉刷新功能，具体配置同 Scroll 组件的 `options.pullDownRefresh`。
+  可以通过 `pullDownRefresh` 属性开启下拉刷新功能，具体配置同 Scroll 组件的 `options.pullDownRefresh`
 
   ```html
   <cube-index-list
@@ -216,7 +216,7 @@
           // Update data.
           this.data[1].items.push(...cityData[1].items)
           // Call forceUpdate after finishing data load.
-          this.$refs.indexList.forceUpdate()
+          this.$refs.indexList.forceUpdate(true)
         }, 1000)
       }
     }
@@ -250,6 +250,7 @@
 
 | 名字 | 说明 | 作用域参数 |
 | - | - | - |
+| title<sup>1.12.25+</sup> | 标题插槽 | - |
 | pulldown<sup>1.9.4+</sup> | 位于列表上方，会在下拉刷新时显示，与 scroll 组件相同 | 具体参考 scroll 组件的 pulldown 插槽作用域参数介绍 |
 | pullup<sup>1.9.4+</sup> | 位于列表下方，会在上拉加载时显示，与 scroll 组件相同  | 具体参考 scroll 组件的 pullup 插槽作用域参数介绍 |
 
