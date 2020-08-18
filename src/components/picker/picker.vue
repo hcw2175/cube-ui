@@ -22,7 +22,7 @@
                   <h1 class="cube-picker-title" v-html="title"></h1>
                   <h2 v-if="subtitle" class="cube-picker-subtitle" v-html="subtitle"></h2>
                 </div>
-              </slot>            
+              </slot>
             </div>
             <div class="cube-picker-content">
               <i class="border-bottom-1px"></i>
@@ -36,7 +36,7 @@
                   <!-- The class name of the ul and li need be configured to BetterScroll. -->
                   <!-- edit by hucw -->
                   <ul class="cube-picker-wheel-scroll">
-                    <li v-for="(item,idx) in data" class="cube-picker-wheel-item" 
+                    <li v-for="(item,idx) in data" class="cube-picker-wheel-item"
                     :class="{'active': wheelSelectedItem[index] === idx}"
                     :key="idx">
                      <div class="cube-picker-wheel-item__val" v-html="item[textKey]"></div>
@@ -63,7 +63,7 @@
   import basicPickerMixin from '../../common/mixins/basic-picker'
   import pickerMixin from '../../common/mixins/picker'
   import localeMixin from '../../common/mixins/locale'
-
+  import { USE_TRANSITION } from '../../common/bscroll/constants'
   const COMPONENT_NAME = 'cube-picker'
 
   const EVENT_SELECT = 'select'
@@ -113,7 +113,7 @@
         }
 
         for (let i = 0; i < length; i++) {
-          let index = this.wheels[i].getSelectedIndex()
+          let index = this._getSelectIndex(this.wheels[i])
           this._indexes[i] = index
 
           let value = null
@@ -257,7 +257,8 @@
             },
             swipeTime: this.swipeTime,
             observeDOM: false,
-            probeType: that.probeType
+            probeType: that.probeType,
+            useTransition: USE_TRANSITION
           })
           // <!-- edit by hucw -->
           // 设置默认选中索引
@@ -266,7 +267,7 @@
             // <!-- edit by hucw -->
             // 设置选中索引
             this.$set(this.wheelSelectedItem, i, wheel.getSelectedIndex())
-            this.$emit(EVENT_CHANGE, i, wheel.getSelectedIndex())
+            this.$emit(EVENT_CHANGE, i, this._getSelectIndex(wheel))
           })
           // <!-- edit by hucw -->
           // 滚动过程实时计算当前位置
@@ -302,6 +303,23 @@
           return data[0][this.orderKey]
         }
         return 0
+      },
+      // fixed BScroll not calculating selectedIndex when setting useTransition to false
+      _getSelectIndex(wheel) {
+        const y = wheel.y
+        let selectedIndex
+        if (USE_TRANSITION) {
+          selectedIndex = wheel.getSelectedIndex()
+        } else {
+          if (y > wheel.minScrollY) {
+            selectedIndex = 0
+          } else if (y < wheel.maxScrollY) {
+            selectedIndex = wheel.items.length - 1
+          } else {
+            selectedIndex = Math.round(Math.abs(y / wheel.itemHeight))
+          }
+        }
+        return selectedIndex
       }
     },
     beforeDestroy() {

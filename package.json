@@ -1,12 +1,11 @@
 {
   "name": "cube-ui",
-  "version": "1.12.36",
+  "version": "1.12.42",
   "description": "A fantastic mobile ui lib implement by Vue",
   "main": "lib/index.js",
   "module": "src/index.js",
   "typings": "types/index.d.ts",
   "postCompile": true,
-  "sideEffects": false,
   "scripts": {
     "build": "node build/build.js",
     "dev": "node build/dev-server.js",
@@ -21,6 +20,12 @@
     "codecov": "codecov",
     "test": "npm run unit && npm run codecov",
     "cm": "git-cz"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "commit-msg": "commitlint -e $GIT_PARAMS"
+    }
   },
   "commitlint": {
     "extends": [
@@ -123,8 +128,7 @@
     "ora": "^1.2.0",
     "phantomjs-polyfill-find-index": "^1.0.1",
     "phantomjs-prebuilt": "^2.1.16",
-    "postcss-loader": "^3.0.0",
-    "px2rem-loader": "^0.1.9",
+    "postcss-loader": "^2.0.5",
     "rimraf": "^2.6.0",
     "scp2": "^0.5.0",
     "shelljs": "^0.7.4",
